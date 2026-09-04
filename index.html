@@ -506,6 +506,15 @@
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxClose = document.getElementById('lightbox-close');
 
+        // Preload full-size images to eliminate lag
+        galleryItems.forEach(item => {
+            const imgSrc = item.getAttribute('data-img');
+            if (imgSrc) {
+                const preloadImg = new Image();
+                preloadImg.src = imgSrc;
+            }
+        });
+
         galleryItems.forEach(item => {
             item.addEventListener('click', () => {
                 const imgSrc = item.getAttribute('data-img');
