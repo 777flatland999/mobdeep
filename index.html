@@ -325,8 +325,127 @@
             margin-top: 6rem;
         }
 
+        /* About Section */
+        .about-section {
+            display: block;
+        }
+
+        .about-section.hidden {
+            display: none;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .about-text h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* Blog Section */
+        .blog-section {
+            margin-top: 4rem;
+        }
+
+        .blog-section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .blog-entry {
+            background: #1a1a1a;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .blog-entry:hover {
+            transform: translateY(-4px);
+        }
+
+        .blog-placeholder {
+            aspect-ratio: 16/9;
+            background: #252525;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+        }
+
+        .blog-entry img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-content h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .blog-date {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-top: 1rem;
+        }
+
         @media (max-width: 768px) {
             .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-content {
                 grid-template-columns: 1fr;
             }
             header {
@@ -359,13 +478,38 @@
             </section>
 
             <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">All Works</button>
+                <button class="filter-btn active" data-filter="about">About</button>
                 <button class="filter-btn" data-filter="industry">Industry</button>
                 <button class="filter-btn" data-filter="personal">Personal Brand</button>
                 <button class="filter-btn" data-filter="property">Property</button>
             </div>
 
-            <div class="gallery-grid">
+            <!-- About Section -->
+            <div id="about-section" class="about-section">
+                <div class="about-content">
+                    <div class="about-image">
+                        <img src="name.JPG" alt="About Me">
+                    </div>
+                    <div class="about-text">
+                        <h2>About The 99th Percentile Studio</h2>
+                        <p>Welcome to my photography portfolio. I specialize in capturing moments that tell stories, from industrial landscapes to personal branding and property photography.</p>
+                    </div>
+                </div>
+                
+                <!-- Blog Area -->
+                <div class="blog-section">
+                    <h3>Photo Updates & Blog</h3>
+                    <div class="blog-grid">
+                        <div class="blog-entry">
+                            <div class="blog-placeholder">
+                                <p>Add your first blog entry here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-grid" id="gallery-grid">
                 <div class="gallery-item" data-category="property" data-img="dining.JPG">
                     <img src="name.JPG" alt="Silent Echo">
                     <div class="overlay">
@@ -483,6 +627,8 @@
         // Filter Gallery
         const filterBtns = document.querySelectorAll('.filter-btn');
         const galleryItems = document.querySelectorAll('.gallery-item');
+        const aboutSection = document.getElementById('about-section');
+        const galleryGrid = document.getElementById('gallery-grid');
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -491,13 +637,21 @@
 
                 const filter = btn.getAttribute('data-filter');
 
-                galleryItems.forEach(item => {
-                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
+                if (filter === 'about') {
+                    aboutSection.classList.remove('hidden');
+                    galleryGrid.style.display = 'none';
+                } else {
+                    aboutSection.classList.add('hidden');
+                    galleryGrid.style.display = 'grid';
+
+                    galleryItems.forEach(item => {
+                        if (item.getAttribute('data-category') === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
             });
         });
 
