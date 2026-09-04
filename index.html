@@ -478,8 +478,8 @@
             </section>
 
             <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="about">About</button>
-                <button class="filter-btn" data-filter="industry">Industry</button>
+                <button class="filter-btn" data-filter="about">About</button>
+                <button class="filter-btn active" data-filter="industry">Industry</button>
                 <button class="filter-btn" data-filter="personal">Personal Brand</button>
                 <button class="filter-btn" data-filter="property">Property</button>
             </div>
@@ -500,11 +500,7 @@
                 <div class="blog-section">
                     <h3>Photo Updates & Blog</h3>
                     <div class="blog-grid">
-                        <div class="blog-entry">
-                            <div class="blog-placeholder">
-                                <p>Add your first blog entry here</p>
-                            </div>
-                        </div>
+                        <!-- Blog entries will be added here -->
                     </div>
                 </div>
             </div>
@@ -629,6 +625,19 @@
         const galleryItems = document.querySelectorAll('.gallery-item');
         const aboutSection = document.getElementById('about-section');
         const galleryGrid = document.getElementById('gallery-grid');
+
+        // Initialize - hide about section, show industry photos by default
+        aboutSection.classList.add('hidden');
+        galleryGrid.style.display = 'grid';
+        
+        // Show only industry items by default
+        galleryItems.forEach(item => {
+            if (item.getAttribute('data-category') === 'industry') {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
