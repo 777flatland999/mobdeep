@@ -1,672 +1,1009 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photography Solutions</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #0f0f0f;
-            --text-primary: #f5f5f5;
-            --text-secondary: #999999;
-            --accent: #d4af37;
-            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>The 99th Percentile Studio</title>
+<meta name="description" content="Photography by Meghan O'Brien. Property, industry, and personal brand work.">
+<meta property="og:title" content="The 99th Percentile Studio">
+<meta property="og:description" content="A Practical Application of Light.">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<!-- =========================================================
+     TWO MODES, ONE PAGE
+     body.landing : black sky, heading, buttons. No header, no scroll.
+     body.site    : your existing portfolio, sky faded out.
+     The logo returns to the sky. Edit the landing buttons in
+     <nav class="landing-links">, one <a> per section.
+     ========================================================= -->
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0f0f0f;
+        --sky-color: #03040a;
+        --text-primary: #f5f5f5;
+        --text-secondary: #999999;
+        --accent: #d4af37;
+        --hairline: rgba(255, 255, 255, 0.05);
+        --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2.5rem 5%;
-            background: rgba(15, 15, 15, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
+    html, body { height: 100%; }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 300;
+        line-height: 1.6;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
 
-        nav a {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition);
-        }
+    body.landing {
+        background-color: var(--sky-color);
+        overflow: hidden;
+        height: 100vh;
+        height: 100svh;
+    }
 
-        nav a:hover, nav a.active {
-            color: var(--text-primary);
-        }
+    body.site { background-color: var(--bg-color); }
 
-        main {
-            padding-top: 10rem;
-            padding-bottom: 5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding-left: 5%;
-            padding-right: 5%;
-        }
+    /* the opening screen leaves the document, so the site starts at the top */
+    body.site .landing { display: none; }
 
-        .hero {
-            text-align: center;
-            margin-bottom: 5rem;
-        }
+    /* If JavaScript never runs the buttons stay ordinary anchors and the
+       site sits below the sky, fully readable, with no filtering. */
+    .no-js body { overflow: auto; height: auto; }
+    .no-js header { position: static; }
+    .no-js .landing { min-height: 62svh; }
 
-        .hero h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3.5rem;
-            font-weight: 300;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-        }
+    /* ---------------- sky layer ---------------- */
+    .sky {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        background:
+            radial-gradient(60% 50% at 20% 12%, rgba(86, 126, 224, 0.13), transparent 70%),
+            radial-gradient(52% 46% at 84% 82%, rgba(176, 92, 206, 0.10), transparent 72%),
+            radial-gradient(70% 60% at 50% 50%, rgba(212, 175, 55, 0.05), transparent 76%),
+            var(--sky-color);
+        transition: opacity 0.9s ease;
+    }
 
-        .hero p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
+    body.site .sky { opacity: 0; pointer-events: none; }
 
-        .filter-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
+    #stars {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        transition: opacity 1.6s ease;
+    }
 
-        .filter-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            transition: var(--transition);
-        }
+    .hero-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 1.8s ease;
+        /* screen blend lets a comet shot on a black sky composite over the stars.
+           Delete this line if your footage looks washed out. */
+        mix-blend-mode: screen;
+    }
 
-        .filter-btn:hover, .filter-btn.active {
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--text-primary);
-        }
+    .has-video .hero-video { opacity: 0.9; }
+    .has-video #stars { opacity: 0.35; }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 2rem;
-        }
+    .vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(120% 92% at 50% 42%, transparent 42%, rgba(0, 0, 0, 0.72) 100%);
+    }
 
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 4/5;
-            cursor: pointer;
-            background: #1a1a1a;
-        }
+    /* ---------------- landing ---------------- */
+    .landing {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        padding: clamp(1.5rem, 6vw, 5rem);
+        text-align: center;
+    }
 
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
-            filter: grayscale(20%);
-        }
+    .landing-inner {
+        width: 100%;
+        max-width: 56rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .gallery-item:hover img {
-            transform: scale(1.04);
-            filter: grayscale(0%);
-        }
+    .landing h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 300;
+        font-size: clamp(2.3rem, 7.6vw, 5.6rem);
+        line-height: 1.08;
+        letter-spacing: 0.03em;
+        max-width: 18ch;
+        text-wrap: balance;
+        text-shadow: 0 0 70px rgba(212, 175, 55, 0.22), 0 0 120px rgba(150, 190, 255, 0.14);
+    }
 
-        .gallery-item .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 2.5rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    .landing-sub {
+        margin-top: clamp(1rem, 2.6vw, 1.5rem);
+        color: var(--text-secondary);
+        font-size: clamp(0.68rem, 1.3vw, 0.8rem);
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        text-wrap: balance;
+    }
+
+    .landing-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.65rem;
+        margin-top: clamp(2.2rem, 5.5vw, 3.4rem);
+    }
+
+    .orbit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.9rem;
+        padding: 0.85rem 1.5rem;
+        border: 1px solid rgba(245, 245, 245, 0.18);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.02);
+        color: inherit;
+        font-size: clamp(0.7rem, 1.15vw, 0.78rem);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        text-decoration: none;
+        backdrop-filter: blur(6px);
+        transition: border-color 0.35s ease, background 0.35s ease, box-shadow 0.45s ease,
+                    transform 0.35s ease, color 0.35s ease;
+    }
+
+    .orbit:hover,
+    .orbit:focus-visible {
+        border-color: rgba(212, 175, 55, 0.75);
+        background: rgba(212, 175, 55, 0.07);
+        box-shadow: 0 14px 50px -16px rgba(212, 175, 55, 0.75), 0 0 0 1px rgba(212, 175, 55, 0.12) inset;
+        color: #fff;
+    }
+
+    .orbit:focus-visible {
+        outline: 2px solid rgba(212, 175, 55, 0.9);
+        outline-offset: 3px;
+    }
+
+    @media (hover: hover) {
+        .orbit:hover { transform: translateY(-1px); }
+    }
+
+    /* ---------------- entrance ---------------- */
+    @media (prefers-reduced-motion: no-preference) {
+        .rise {
             opacity: 0;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+            transform: translateY(14px);
+            animation: rise 1.15s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+            animation-delay: var(--d, 0s);
         }
-
-        .gallery-item:hover .overlay {
-            opacity: 1;
-        }
-
-        .overlay h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
-        }
-
-        .overlay span {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--text-secondary);
-        }
-
-        /* Lightbox Modal */
-        .lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 10, 0.95);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
+        .landing-links .orbit {
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
+            transform: translateY(10px);
+            animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+            animation-delay: calc(0.8s + var(--i, 0) * 0.08s);
         }
+    }
 
-        .lightbox.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+    @keyframes rise {
+        to { opacity: 1; transform: none; }
+    }
 
-        .lightbox img {
-            max-width: 85vw;
-            max-height: 85vh;
-            object-fit: contain;
-        }
+    /* ---------------- your site ---------------- */
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2.5rem 5%;
+        background: rgba(15, 15, 15, 0.85);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        border-bottom: 1px solid var(--hairline);
+    }
 
-        .lightbox-close {
-            position: absolute;
-            top: 2rem;
-            right: 3rem;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 2rem;
-            cursor: pointer;
-            font-weight: 300;
-        }
+    .logo {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.8rem;
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: var(--transition);
+    }
 
-        /* Contact Section */
-        .contact-section {
-            max-width: 800px;
-            margin: 8rem auto 4rem auto;
-            padding: 4rem 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: none;
-        }
+    .logo:hover { color: var(--accent); }
 
-        .contact-section.active {
-            display: block;
-        }
+    nav ul { display: flex; list-style: none; gap: 2.5rem; }
 
-        .contact-section h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.8rem;
-            font-weight: 300;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
+    nav a {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: var(--transition);
+    }
 
-        .contact-section p {
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 3rem;
-            font-size: 0.95rem;
-        }
+    nav a:hover, nav a.active { color: var(--text-primary); }
 
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
+    main {
+        padding-top: 10rem;
+        padding-bottom: 5rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+    #gallery-view:focus { outline: none; }
 
-        .form-group label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--text-secondary);
-        }
+    .filter-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
 
-        .form-control {
-            background: #161616;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            transition: var(--transition);
-        }
+    .filter-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        transition: var(--transition);
+    }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--text-primary);
-        }
+    .filter-btn:hover, .filter-btn.active {
+        color: var(--text-primary);
+        border-bottom: 1px solid var(--text-primary);
+    }
 
-        textarea.form-control {
-            resize: vertical;
-            min-height: 150px;
-        }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        gap: 2rem;
+    }
 
-        .submit-btn {
-            background: var(--text-primary);
-            color: var(--bg-color);
-            border: none;
-            padding: 1rem 2rem;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 0.2em;
-            cursor: pointer;
-            transition: var(--transition);
-            align-self: flex-start;
-            margin-top: 1rem;
-        }
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 4 / 5;
+        cursor: pointer;
+        background: #1a1a1a;
+    }
 
-        .submit-btn:hover {
-            background: var(--text-secondary);
-        }
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+        filter: grayscale(20%);
+    }
 
-        footer {
-            text-align: center;
-            padding: 3rem 0;
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 6rem;
-        }
+    .gallery-item:hover img { transform: scale(1.04); filter: grayscale(0%); }
 
-        /* About Section */
-        .about-section {
-            display: block;
-        }
+    .gallery-item .overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 2.5rem;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        opacity: 0;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
 
-        .about-section.hidden {
-            display: none;
-        }
+    .gallery-item:hover .overlay { opacity: 1; }
 
-        .about-content {
-            margin-bottom: 4rem;
-        }
+    .overlay h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.25rem;
+    }
 
-        .about-text h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.05em;
-        }
+    .overlay span {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--text-secondary);
+    }
 
-        .about-text p {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            font-size: 1rem;
-        }
+    /* Lightbox */
+    .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(10, 10, 10, 0.96);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+    }
 
-        /* Blog Section */
-        .blog-section {
-            margin-top: 4rem;
-        }
+    .lightbox.active { opacity: 1; pointer-events: auto; }
 
-        .blog-section h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-            letter-spacing: 0.05em;
-        }
+    .lightbox img { max-width: 85vw; max-height: 85vh; object-fit: contain; }
 
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
+    .lightbox-close {
+        position: absolute;
+        top: 2rem;
+        right: 3rem;
+        background: none;
+        border: none;
+        color: var(--text-primary);
+        font-size: 2rem;
+        cursor: pointer;
+        font-weight: 300;
+        line-height: 1;
+    }
 
-        .blog-entry {
-            background: #1a1a1a;
-            border-radius: 4px;
-            overflow: hidden;
-            transition: var(--transition);
-        }
+    .lightbox-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
-        .blog-entry:hover {
-            transform: translateY(-4px);
-        }
+    /* Contact */
+    .contact-section {
+        max-width: 800px;
+        margin: 4rem auto 4rem auto;
+        padding: 4rem 0;
+        border-top: 1px solid var(--hairline);
+        display: none;
+    }
 
-        .blog-content {
-            padding: 2rem;
-        }
+    .contact-section.active { display: block; }
 
-        .blog-content h4 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
-        }
+    .contact-section h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.8rem;
+        font-weight: 300;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
 
-        .blog-content p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
+    .contact-section p {
+        color: var(--text-secondary);
+        text-align: center;
+        margin-bottom: 3rem;
+        font-size: 0.95rem;
+    }
 
-        .blog-date {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            margin-top: 1rem;
-        }
+    .contact-form { display: flex; flex-direction: column; gap: 1.5rem; }
 
-        @media (max-width: 768px) {
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            header {
-                padding: 1.5rem 5%;
-            }
-            nav ul {
-                gap: 1.5rem;
-            }
-        }
-    </style>
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .form-group label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--text-secondary);
+    }
+
+    .form-control {
+        background: #161616;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        transition: var(--transition);
+    }
+
+    .form-control:focus { outline: none; border-color: var(--text-primary); }
+
+    textarea.form-control { resize: vertical; min-height: 150px; }
+
+    .submit-btn {
+        background: var(--text-primary);
+        color: var(--bg-color);
+        border: none;
+        padding: 1rem 2rem;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.2em;
+        cursor: pointer;
+        transition: var(--transition);
+        align-self: flex-start;
+        margin-top: 1rem;
+    }
+
+    .submit-btn:hover { background: var(--text-secondary); }
+
+    footer {
+        text-align: center;
+        padding: 3rem 0;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        border-top: 1px solid var(--hairline);
+        margin-top: 6rem;
+    }
+
+    /* About */
+    .about-section { display: block; }
+    .about-section.hidden { display: none; }
+    .about-content { margin-bottom: 4rem; }
+
+    .about-text h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.5rem;
+        font-weight: 300;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.05em;
+    }
+
+    .about-text p { color: var(--text-secondary); line-height: 1.8; font-size: 1rem; }
+
+    /* Blog */
+    .blog-section { margin-top: 4rem; }
+
+    .blog-section h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 300;
+        margin-bottom: 2rem;
+        letter-spacing: 0.05em;
+    }
+
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .blog-entry { background: #1a1a1a; border-radius: 4px; overflow: hidden; transition: var(--transition); }
+
+    .blog-entry:hover { transform: translateY(-4px); }
+
+    .blog-content { padding: 2rem; }
+
+    .blog-content h4 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.3rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+    }
+
+    .blog-content p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.75rem; }
+
+    .blog-date {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .gallery-grid { grid-template-columns: 1fr; }
+        .about-content { grid-template-columns: 1fr; }
+        header { padding: 1.5rem 5%; }
+        nav ul { gap: 1.5rem; }
+        .logo { font-size: 1.4rem; }
+        main { padding-top: 8rem; }
+        .contact-section { margin-top: 2rem; padding-top: 2.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .sky, #stars, .hero-video, .orbit, .gallery-item img { transition: none; }
+    }
+</style>
 </head>
-<body>
+<body class="landing">
 
-    <header>
-        <a href="#" class="logo" id="home-link"> The 99th percentile Studio </a>
-        <nav>
-            <ul>
-                <li><a href="#" class="nav-link active" data-target="gallery">Gallery</a></li>
-                <li><a href="#" class="nav-link" data-target="contact">Contact</a></li>
-            </ul>
+<!-- ============ sky ============ -->
+<div class="sky" aria-hidden="true">
+    <canvas id="stars"></canvas>
+
+    <!-- Drop your comet footage at media/hero.mp4 (and optionally media/hero.webm
+         first in the list). Until the file exists this stays invisible and the
+         canvas starfield is the whole show. Poster: media/hero-poster.jpg -->
+    <video class="hero-video" id="hero-video" muted loop playsinline preload="none"
+           poster="media/hero-poster.jpg">
+        <source src="media/hero.webm" type="video/webm">
+        <source src="media/hero.mp4" type="video/mp4">
+    </video>
+
+    <div class="vignette"></div>
+</div>
+
+<!-- ============ landing ============ -->
+<div class="landing" id="landing">
+    <div class="landing-inner">
+        <h1 class="rise" style="--d:.1s">A Practical Application of Light</h1>
+
+        <!-- One line of your original copy. Delete this <p> for heading + buttons only. -->
+        <p class="landing-sub rise" style="--d:.35s">Start-up photography business by yours truly</p>
+
+        <!-- EDIT: one <a> per section. data-enter must be about | industry | personal | property | contact -->
+        <nav class="landing-links" aria-label="Sections">
+            <a class="orbit" href="#gallery-view" data-enter="about"    style="--i:0">About</a>
+            <a class="orbit" href="#gallery-view" data-enter="industry" style="--i:1">Industry</a>
+            <a class="orbit" href="#gallery-view" data-enter="personal" style="--i:2">Personal Brand</a>
+            <a class="orbit" href="#gallery-view" data-enter="property" style="--i:3">Property</a>
+            <a class="orbit" href="#contact-section" data-enter="contact" style="--i:4">Contact</a>
         </nav>
-    </header>
+    </div>
+</div>
 
-    <main>
-        <!-- Gallery View -->
-        <div id="gallery-view">
-            <section class="hero">
-                <h1>A Practical Application of Light</h1>
-                <p>Start-up photography business by yours truly</p>
-            </section>
+<!-- ============ your site ============ -->
+<header id="site-header">
+    <a href="#landing" class="logo" id="home-link" title="Back to the sky">The 99th Percentile Studio</a>
+    <nav aria-label="Site">
+        <ul>
+            <li><a href="#gallery-view" class="nav-link active" data-target="gallery">Gallery</a></li>
+            <li><a href="#contact-section" class="nav-link" data-target="contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
 
-            <div class="filter-buttons">
-                <button class="filter-btn" data-filter="about">About</button>
-                <button class="filter-btn active" data-filter="industry">Industry</button>
-                <button class="filter-btn" data-filter="personal">Personal Brand</button>
-                <button class="filter-btn" data-filter="property">Property</button>
+<main>
+    <!-- Gallery View -->
+    <div id="gallery-view" tabindex="-1">
+        <div class="filter-buttons">
+            <button class="filter-btn" data-filter="about">About</button>
+            <button class="filter-btn active" data-filter="industry">Industry</button>
+            <button class="filter-btn" data-filter="personal">Personal Brand</button>
+            <button class="filter-btn" data-filter="property">Property</button>
+        </div>
+
+        <!-- About Section -->
+        <div id="about-section" class="about-section">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About The 99th Percentile Studio</h2>
+                    <p>Welcome to my photography portfolio. I specialize in capturing moments that tell stories, from industrial landscapes to personal branding and property photography.</p>
+                </div>
             </div>
 
-            <!-- About Section -->
-            <div id="about-section" class="about-section">
-                <div class="about-content">
-                    <div class="about-text">
-                        <h2>About The 99th Percentile Studio</h2>
-                        <p>Welcome to my photography portfolio. I specialize in capturing moments that tell stories, from industrial landscapes to personal branding and property photography.</p>
-                    </div>
-                </div>
-                
-                <!-- Blog Area -->
-                <div class="blog-section">
-                    <h3>Photo Updates & Blog</h3>
-                    <div class="blog-grid">
-                        <div class="blog-entry">
-                            <div class="blog-content">
-                                <h4>My Cameras</h4>
-                                <p>Nikon CoolPix p1000</p>
-                                <p>Nikon 1979 35mm FE </p>
-                                <p> The Nikon COOLPIX P1000 is best understood as an exercise in extreme zoom-ratio optimization on a small sensor, where nearly every other optical parameter is traded away to achieve the range. The fixed NIKKOR lens runs from 4.3 to 539 mm physical focal length, which Nikon states as a 24–3000 mm field-of-view equivalent in 35 mm format; that is a true 125× optical zoom ratio. Maximum aperture scales from f/2.8 at wide to f/8 at full telephoto, controlled by a seven-blade electronic iris. In practice it functions as a specialized instrument for lunar, avian, and long-distance observation where reach outweighs resolving power.</p>
-                                <p> The Nikon 35mm FE is best described as a precision electromechanical image-plane platform for Nikon F-mount optics. It was introduced in 1978, mine is from 1979. Its engineering logic is graceful degradation: if the battery fails, the camera still operates at the mechanical 1/90 s speed. But as a 1979 SLR, it is a compact, well-damped F-mount film plane with reliable TTL metering and a fail-safe mechanical shutter path.</p>
-                                <div class="blog-date">TBA</div>
-                            </div>
+            <!-- Blog Area -->
+            <div class="blog-section">
+                <h3>Photo Updates &amp; Blog</h3>
+                <div class="blog-grid">
+                    <div class="blog-entry">
+                        <div class="blog-content">
+                            <h4>My Cameras</h4>
+                            <p>Nikon CoolPix P1000</p>
+                            <p>Nikon 1979 35mm FE</p>
+                            <p>The Nikon COOLPIX P1000 is best understood as an exercise in extreme zoom-ratio optimization on a small sensor, where nearly every other optical parameter is traded away to achieve the range. The fixed NIKKOR lens runs from 4.3 to 539 mm physical focal length, which Nikon states as a 24–3000 mm field-of-view equivalent in 35 mm format; that is a true 125× optical zoom ratio. Maximum aperture scales from f/2.8 at wide to f/8 at full telephoto, controlled by a seven-blade electronic iris. In practice it functions as a specialized instrument for lunar, avian, and long-distance observation where reach outweighs resolving power.</p>
+                            <p>The Nikon 35mm FE is best described as a precision electromechanical image-plane platform for Nikon F-mount optics. It was introduced in 1978, mine is from 1979. Its engineering logic is graceful degradation: if the battery fails, the camera still operates at the mechanical 1/90 s speed. But as a 1979 SLR, it is a compact, well-damped F-mount film plane with reliable TTL metering and a fail-safe mechanical shutter path.</p>
+                            <div class="blog-date">TBA</div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="gallery-grid" id="gallery-grid">
-                <div class="gallery-item" data-category="property" data-img="dining.JPG">
-                    <img src="name.JPG" alt="Silent Echo">
-                    <div class="overlay">
-                        <h3>Real Estate</h3>
-                        <span>Property / 2026</span>
-                    </div>
+        <div class="gallery-grid" id="gallery-grid">
+            <div class="gallery-item" data-category="property" data-img="dining.JPG">
+                <img src="name.JPG" alt="Silent Echo">
+                <div class="overlay">
+                    <h3>Real Estate</h3>
+                    <span>Property / 2026</span>
                 </div>
+            </div>
 
-                <div class="gallery-item" data-category="personal" data-img="solitary_quasar.JPG">
-                    <img src="Solitude.JPG" alt="Solitude I">
-                    <div class="overlay">
-                        <h3>Solitude I</h3>
-                        <span>Personal Brand / 2026</span>
-                    </div>
+            <div class="gallery-item" data-category="personal" data-img="solitary_quasar.JPG">
+                <img src="Solitude.JPG" alt="Solitude I">
+                <div class="overlay">
+                    <h3>Solitude I</h3>
+                    <span>Personal Brand / 2026</span>
                 </div>
+            </div>
 
-                <div class="gallery-item" data-category="personal" data-img="WED_IMAGE.JPG">
-                    <img src="camelback.JPG" alt="Velvet & Light">
-                    <div class="overlay">
-                        <h3>Weddings
-                        </h3>
-                        <span>Personal Brand / 2026</span>
-                    </div>
+            <div class="gallery-item" data-category="personal" data-img="WED_IMAGE.JPG">
+                <img src="camelback.JPG" alt="Velvet &amp; Light">
+                <div class="overlay">
+                    <h3>Weddings</h3>
+                    <span>Personal Brand / 2026</span>
                 </div>
+            </div>
 
-                <div class="gallery-item" data-category="personal" data-img="Phoenix.JPG">
-                    <img src="Mt_lemmon.JPG" alt="The Contemplation">
-                    <div class="overlay">
-                        <h3>The Contemplation</h3>
-                        <span>Personal Brand / 2026</span>
-                    </div>
+            <div class="gallery-item" data-category="personal" data-img="Phoenix.JPG">
+                <img src="Mt_lemmon.JPG" alt="The Contemplation">
+                <div class="overlay">
+                    <h3>The Contemplation</h3>
+                    <span>Personal Brand / 2026</span>
                 </div>
+            </div>
 
-                <div class="gallery-item" data-category="personal" data-img="Senor_mijo.JPG">
-                    <img src="OLIVE.JPG" alt="Alpine Silence">
-                    <div class="overlay">
-                        <h3>Pets!</h3>
-                        <span>Personal Brand / 2026</span>
-                    </div>
+            <div class="gallery-item" data-category="personal" data-img="Senor_mijo.JPG">
+                <img src="OLIVE.JPG" alt="Alpine Silence">
+                <div class="overlay">
+                    <h3>Pets!</h3>
+                    <span>Personal Brand / 2026</span>
                 </div>
+            </div>
 
-                <div class="gallery-item" data-category="industry" data-img="industry_for_you.JPG">
-                    <img src="frank_lloyd.JPG" alt="Ephemeral">
-                    <div class="overlay">
-                        <h3>Industry</h3>
-                        <span>Industry / 2026</span>
-                    </div>
+            <div class="gallery-item" data-category="industry" data-img="industry_for_you.JPG">
+                <img src="frank_lloyd.JPG" alt="Ephemeral">
+                <div class="overlay">
+                    <h3>Industry</h3>
+                    <span>Industry / 2026</span>
                 </div>
             </div>
         </div>
-
-        <!-- Contact Section -->
-        <div id="contact-section" class="contact-section">
-            <h2>Inquiries & Commissions</h2>
-            <p>For serious session inquiries, please connect below.</p>
-           <form class="contact-form" action="https://formsubmit.co/mfo7@nau.edu" method="POST">
-    <!-- Optional: Disable captcha or set a custom redirect page -->
-    <input type="hidden" name="_subject" value="New Photography Inquiry from Studio Website">
-    <input type="hidden" name="_template" value="table">
-    
-    <div class="form-group">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" name="name" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="message">Message / Project Details</label>
-        <textarea id="message" name="message" class="form-control" required></textarea>
-    </div>
-    <button type="submit" class="submit-btn">Send Inquiry</button>
-</form>
-
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Meghan O'Brien. All Rights Reserved.</p>
-    </footer>
-
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox">
-        <button class="lightbox-close" id="lightbox-close">&times;</button>
-        <img id="lightbox-img" src="" alt="Enlarged view">
     </div>
 
-    <script>
-        // Navigation switching
-        const navLinks = document.querySelectorAll('.nav-link, #home-link');
-        const galleryView = document.getElementById('gallery-view');
-        const contactSection = document.getElementById('contact-section');
+    <!-- Contact Section -->
+    <div id="contact-section" class="contact-section">
+        <h2>Inquiries &amp; Commissions</h2>
+        <p>For serious session inquiries, please connect below.</p>
+        <form class="contact-form" action="https://formsubmit.co/mfo7@nau.edu" method="POST">
+            <input type="hidden" name="_subject" value="New Photography Inquiry from Studio Website">
+            <input type="hidden" name="_template" value="table">
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = link.getAttribute('data-target') || 'gallery';
-                
-                navLinks.forEach(l => l.classList.remove('active'));
-                
-                if (target === 'contact') {
-                    galleryView.style.display = 'none';
-                    contactSection.classList.add('active');
-                    document.querySelector('[data-target="contact"]').classList.add('active');
-                } else {
-                    galleryView.style.display = 'block';
-                    contactSection.classList.remove('active');
-                    document.querySelector('[data-target="gallery"]').classList.add('active');
-                }
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        });
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message / Project Details</label>
+                <textarea id="message" name="message" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Inquiry</button>
+        </form>
+    </div>
+</main>
 
-        // Filter Gallery - Optimized for performance
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        const aboutSection = document.getElementById('about-section');
-        const galleryGrid = document.getElementById('gallery-grid');
+<footer>
+    <p>&copy; 2026 Meghan O'Brien. All Rights Reserved.</p>
+</footer>
 
-        // Use requestAnimationFrame for smoother DOM updates
-        function updateGallery(filter) {
-            requestAnimationFrame(() => {
-                if (filter === 'about') {
-                    aboutSection.classList.remove('hidden');
-                    galleryGrid.style.display = 'none';
-                } else {
-                    aboutSection.classList.add('hidden');
-                    galleryGrid.style.display = 'grid';
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged photograph">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
 
-                    galleryItems.forEach(item => {
-                        const isVisible = item.getAttribute('data-category') === filter;
-                        item.style.display = isVisible ? 'block' : 'none';
-                    });
-                }
+<script>
+(function () {
+    "use strict";
+    document.documentElement.classList.remove("no-js");
+
+    /* ================= starfield ================= */
+    var canvas = document.getElementById("stars");
+    var ctx = canvas.getContext("2d");
+    var video = document.getElementById("hero-video");
+    var root = document.documentElement;
+    var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    var stars = [], meteors = [];
+    var w = 0, h = 0, dpr = 1, raf = null, last = 0;
+    var pointer = { x: 0, y: 0 };
+    var active = true;
+
+    function size() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = canvas.clientWidth || window.innerWidth;
+        h = canvas.clientHeight || window.innerHeight;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        build();
+    }
+
+    function build() {
+        var count = Math.max(140, Math.min(620, Math.round((w * h) / 5200)));
+        stars = [];
+        for (var i = 0; i < count; i++) {
+            var depth = Math.random() * 0.8 + 0.2;
+            stars.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                r: (Math.random() * 1.05 + 0.3) * depth,
+                a: Math.random() * 0.55 + 0.22,
+                speed: Math.random() * 1.7 + 0.4,
+                phase: Math.random() * Math.PI * 2,
+                depth: depth
             });
         }
+    }
 
-        // Initialize - hide about section, show industry photos by default
-        aboutSection.classList.add('hidden');
-        galleryGrid.style.display = 'grid';
-        
-        // Show only industry items by default
-        galleryItems.forEach(item => {
-            const isVisible = item.getAttribute('data-category') === 'industry';
-            item.style.display = isVisible ? 'block' : 'none';
+    function spawnMeteor() {
+        var fromLeft = Math.random() < 0.5;
+        meteors.push({
+            x: fromLeft ? Math.random() * w * 0.55 : w - Math.random() * w * 0.55,
+            y: Math.random() * h * 0.55,
+            vx: (fromLeft ? 1 : -1) * (Math.random() * 0.55 + 0.65),
+            vy: Math.random() * 0.3 + 0.32,
+            len: Math.random() * 130 + 100,
+            life: 1
         });
+    }
 
-        // Use event delegation for better performance
-        document.querySelector('.filter-buttons').addEventListener('click', (e) => {
-            if (e.target.classList.contains('filter-btn')) {
-                const btn = e.target;
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                updateGallery(btn.getAttribute('data-filter'));
-            }
+    function stepMeteors(dt) {
+        var k = dt / 16.667;
+        for (var i = meteors.length - 1; i >= 0; i--) {
+            var m = meteors[i];
+            m.x += m.vx * k;
+            m.y += m.vy * k;
+            m.life -= 0.0075 * k;
+            if (m.life <= 0 || m.x < -m.len || m.x > w + m.len || m.y > h + m.len) meteors.splice(i, 1);
+        }
+    }
+
+    function drawMeteors() {
+        for (var i = 0; i < meteors.length; i++) {
+            var m = meteors[i];
+            var mag = Math.hypot(m.vx, m.vy) || 1;
+            var tailX = m.x - (m.vx / mag) * m.len;
+            var tailY = m.y - (m.vy / mag) * m.len;
+            var g = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
+            g.addColorStop(0, "rgba(255,255,255," + (0.85 * m.life).toFixed(3) + ")");
+            g.addColorStop(0.45, "rgba(190,215,255," + (0.28 * m.life).toFixed(3) + ")");
+            g.addColorStop(1, "rgba(190,215,255,0)");
+            ctx.strokeStyle = g;
+            ctx.lineWidth = 1.7;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(m.x, m.y);
+            ctx.lineTo(tailX, tailY);
+            ctx.stroke();
+        }
+    }
+
+    function draw(t) {
+        ctx.clearRect(0, 0, w, h);
+        var still = motionQuery.matches;
+        var ox = pointer.x * 14;
+        var oy = pointer.y * 14;
+
+        for (var i = 0; i < stars.length; i++) {
+            var s = stars[i];
+            var tw = still ? 1 : 0.68 + Math.sin(t * 0.001 * s.speed + s.phase) * 0.32;
+            ctx.globalAlpha = Math.max(0.04, Math.min(1, s.a * tw));
+            ctx.fillStyle = "#ffffff";
+            var x = (s.x + ox * s.depth + w) % w;
+            var y = (s.y + oy * s.depth + h) % h;
+            ctx.beginPath();
+            ctx.arc(x, y, s.r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        ctx.globalAlpha = 1;
+        if (!still) drawMeteors();
+    }
+
+    function frame(t) {
+        var dt = last ? Math.min(50, t - last) : 16;
+        last = t;
+        if (Math.random() < 0.0045) spawnMeteor();
+        stepMeteors(dt);
+        draw(t);
+        raf = requestAnimationFrame(frame);
+    }
+
+    function startField() {
+        if (raf !== null || !active) return;
+        last = 0;
+        if (motionQuery.matches) { draw(0); return; }
+        raf = requestAnimationFrame(frame);
+    }
+
+    function stopField() {
+        if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+    }
+
+    function restartField() {
+        stopField();
+        meteors = [];
+        size();
+        startField();
+    }
+
+    var resizeTimer = null;
+    window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(restartField, 180);
+    });
+
+    window.addEventListener("pointermove", function (e) {
+        if (motionQuery.matches) return;
+        pointer.x = (e.clientX / window.innerWidth - 0.5) * 2;
+        pointer.y = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    if (motionQuery.addEventListener) motionQuery.addEventListener("change", restartField);
+    else if (motionQuery.addListener) motionQuery.addListener(restartField);
+
+    function revealVideo() { root.classList.add("has-video"); }
+    video.addEventListener("canplay", revealVideo);
+    video.addEventListener("playing", revealVideo);
+    video.addEventListener("loadeddata", function () {
+        if (!motionQuery.matches) {
+            var p = video.play();
+            if (p && typeof p.catch === "function") p.catch(function () {});
+        }
+    });
+
+    size();
+    startField();
+
+    /* ================= mode switching ================= */
+    var body = document.body;
+    var galleryView = document.getElementById("gallery-view");
+    var contactSection = document.getElementById("contact-section");
+    var aboutSection = document.getElementById("about-section");
+    var galleryGrid = document.getElementById("gallery-grid");
+    var galleryItems = Array.prototype.slice.call(document.querySelectorAll(".gallery-item"));
+    var filterBtns = Array.prototype.slice.call(document.querySelectorAll(".filter-btn"));
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav-link"));
+    var homeLink = document.getElementById("home-link");
+
+    function setFilter(name) {
+        filterBtns.forEach(function (b) {
+            b.classList.toggle("active", b.getAttribute("data-filter") === name);
         });
-
-        // Lightbox
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxClose = document.getElementById('lightbox-close');
-
-        // Preload full-size images to eliminate lag
-        galleryItems.forEach(item => {
-            const imgSrc = item.getAttribute('data-img');
-            if (imgSrc) {
-                const preloadImg = new Image();
-                preloadImg.src = imgSrc;
-            }
-        });
-
-        galleryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const imgSrc = item.getAttribute('data-img');
-                lightboxImg.src = imgSrc;
-                lightbox.classList.add('active');
+        if (name === "about") {
+            aboutSection.classList.remove("hidden");
+            galleryGrid.style.display = "none";
+        } else {
+            aboutSection.classList.add("hidden");
+            galleryGrid.style.display = "grid";
+            galleryItems.forEach(function (item) {
+                item.style.display = item.getAttribute("data-category") === name ? "block" : "none";
             });
-        });
+        }
+    }
 
-        lightboxClose.addEventListener('click', () => {
-            lightbox.classList.remove('active');
+    function showGallery() {
+        galleryView.style.display = "block";
+        contactSection.classList.remove("active");
+        navLinks.forEach(function (l) {
+            l.classList.toggle("active", l.getAttribute("data-target") === "gallery");
         });
+    }
 
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                lightbox.classList.remove('active');
-            }
+    function showContact() {
+        galleryView.style.display = "none";
+        contactSection.classList.add("active");
+        navLinks.forEach(function (l) {
+            l.classList.toggle("active", l.getAttribute("data-target") === "contact");
         });
-    </script>
+    }
+
+    function enterSite(target) {
+        body.classList.remove("landing");
+        body.classList.add("site");
+        active = false;
+        stopField();
+        if (video.pause) video.pause();
+        window.scrollTo(0, 0);
+
+        if (target === "contact") {
+            showContact();
+            contactSection.scrollIntoView({ behavior: "auto", block: "start" });
+        } else {
+            showGallery();
+            setFilter(target || "industry");
+            galleryView.focus({ preventScroll: true });
+        }
+    }
+
+    function leaveSite() {
+        body.classList.add("landing");
+        body.classList.remove("site");
+        window.scrollTo(0, 0);
+        active = true;
+        restartField();
+        if (video.src || video.currentSrc) {
+            var p = video.play();
+            if (p && typeof p.catch === "function") p.catch(function () {});
+        }
+        var first = document.querySelector(".landing-links .orbit");
+        if (first) first.focus({ preventScroll: true });
+    }
+
+    document.querySelectorAll("[data-enter]").forEach(function (a) {
+        a.addEventListener("click", function (e) {
+            e.preventDefault();
+            enterSite(a.getAttribute("data-enter"));
+        });
+    });
+
+    navLinks.forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+            var target = link.getAttribute("data-target");
+            if (target === "contact") showContact();
+            else showGallery();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    });
+
+    homeLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        leaveSite();
+    });
+
+    document.querySelector(".filter-buttons").addEventListener("click", function (e) {
+        var btn = e.target.closest(".filter-btn");
+        if (btn) setFilter(btn.getAttribute("data-filter"));
+    });
+
+    /* ================= lightbox ================= */
+    var lightbox = document.getElementById("lightbox");
+    var lightboxImg = document.getElementById("lightbox-img");
+    var lightboxClose = document.getElementById("lightbox-close");
+    var lastFocused = null;
+
+    galleryItems.forEach(function (item) {
+        var src = item.getAttribute("data-img");
+        if (src) { var pre = new Image(); pre.src = src; }
+
+        item.addEventListener("click", function () {
+            lastFocused = item;
+            lightboxImg.src = item.getAttribute("data-img") || item.querySelector("img").src;
+            lightbox.classList.add("active");
+            lightboxClose.focus({ preventScroll: true });
+        });
+    });
+
+    function closeLightbox() {
+        lightbox.classList.remove("active");
+        if (lastFocused) lastFocused.focus({ preventScroll: true });
+    }
+
+    lightboxClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", function (e) {
+        if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && lightbox.classList.contains("active")) closeLightbox();
+    });
+
+    /* ================= init ================= */
+    setFilter("industry");
+    showGallery();
+})();
+</script>
 </body>
 </html>
