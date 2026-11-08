@@ -60,7 +60,7 @@
     /* If JavaScript never runs the buttons stay ordinary anchors and the
        site sits below the sky, fully readable, with no filtering. */
     .no-js body { overflow: auto; height: auto; }
-    .no-js header { position: static; }
+    .no-js header { position: static; opacity: 1; visibility: visible; transform: none; }
     .no-js .landing { min-height: 62svh; }
 
     /* ---------------- sky layer ---------------- */
@@ -229,6 +229,19 @@
         backdrop-filter: blur(10px);
         z-index: 1000;
         border-bottom: 1px solid var(--hairline);
+        /* the header belongs to the site, never to the opening screen */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity 0.7s ease, transform 0.7s ease, visibility 0s linear 0.7s;
+    }
+
+    /* arrives only once a landing button has been used */
+    body.site header {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition: opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s, visibility 0s;
     }
 
     .logo {
@@ -244,18 +257,8 @@
 
     .logo:hover { color: var(--accent); }
 
-    nav ul { display: flex; list-style: none; gap: 2.5rem; }
 
-    nav a {
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.15em;
-        color: var(--text-secondary);
-        text-decoration: none;
-        transition: var(--transition);
-    }
 
-    nav a:hover, nav a.active { color: var(--text-primary); }
 
     main {
         padding-top: 10rem;
@@ -521,7 +524,6 @@
         .gallery-grid { grid-template-columns: 1fr; }
         .about-content { grid-template-columns: 1fr; }
         header { padding: 1.5rem 5%; }
-        nav ul { gap: 1.5rem; }
         .logo { font-size: 1.4rem; }
         main { padding-top: 8rem; }
         .contact-section { margin-top: 2rem; padding-top: 2.5rem; }
@@ -571,13 +573,7 @@
 
 <!-- ============ your site ============ -->
 <header id="site-header">
-    <a href="#landing" class="logo" id="home-link" title="Back to the sky">The 99th Percentile Studio</a>
-    <nav aria-label="Site">
-        <ul>
-            <li><a href="#gallery-view" class="nav-link active" data-target="gallery">Gallery</a></li>
-            <li><a href="#contact-section" class="nav-link" data-target="contact">Contact</a></li>
-        </ul>
-    </nav>
+    <a href="#landing" class="logo" id="home-link" title="Back to the start page">The 99th Percentile Studio</a>
 </header>
 
 <main>
@@ -875,7 +871,6 @@
     var galleryGrid = document.getElementById("gallery-grid");
     var galleryItems = Array.prototype.slice.call(document.querySelectorAll(".gallery-item"));
     var filterBtns = Array.prototype.slice.call(document.querySelectorAll(".filter-btn"));
-    var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav-link"));
     var homeLink = document.getElementById("home-link");
 
     function setFilter(name) {
@@ -897,17 +892,11 @@
     function showGallery() {
         galleryView.style.display = "block";
         contactSection.classList.remove("active");
-        navLinks.forEach(function (l) {
-            l.classList.toggle("active", l.getAttribute("data-target") === "gallery");
-        });
     }
 
     function showContact() {
         galleryView.style.display = "none";
         contactSection.classList.add("active");
-        navLinks.forEach(function (l) {
-            l.classList.toggle("active", l.getAttribute("data-target") === "contact");
-        });
     }
 
     function enterSite(target) {
@@ -946,16 +935,6 @@
         a.addEventListener("click", function (e) {
             e.preventDefault();
             enterSite(a.getAttribute("data-enter"));
-        });
-    });
-
-    navLinks.forEach(function (link) {
-        link.addEventListener("click", function (e) {
-            e.preventDefault();
-            var target = link.getAttribute("data-target");
-            if (target === "contact") showContact();
-            else showGallery();
-            window.scrollTo({ top: 0, behavior: "smooth" });
         });
     });
 
